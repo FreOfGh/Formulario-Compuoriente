@@ -5,7 +5,7 @@ const isProduction = process.env.APP_ENV === 'production';
 
 const dbConfig = isProduction 
     ? {
-        connectionString: process.env.DATABASE_URL,
+        connectionString: process.env.DATABASE_PUBLIC_URL,
         ssl: { rejectUnauthorized: false } // Obligatorio para Railway
       }
     : {
