@@ -1,27 +1,33 @@
 {
-  "name": "backend",
+  "name": "backend-compuoriente",
   "version": "1.0.0",
-  "description": "",
-  "main": "sever.js",
+  "description": "Sistema de inscripciones para el Politécnico CompuOriente",
+  "main": "server.js",
   "scripts": {
+    "start": "node server.js",
+    "postinstall": "npx playwright install --with-deps chromium",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
+  "keywords": [
+    "nodejs",
+    "express",
+    "playwright",
+    "railway"
+  ],
   "author": "",
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {
     "cors": "^2.8.5",
-    "docx-pdf": "^0.0.1",
-    "docxtemplater": "^3.67.6",
     "dotenv": "^17.2.3",
     "express": "^5.2.1",
-    "libreoffice-convert": "^1.7.0",
     "multer": "^2.0.2",
     "nodemailer": "^7.0.12",
     "pdf-lib": "^1.17.1",
     "pg": "^8.17.1",
-    "pizzip": "^3.2.0",
     "playwright": "^1.57.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
   }
 }
