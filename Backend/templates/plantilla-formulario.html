@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Formato de Inscripción</title>
+
+  <style>
+    @page {
+      size: A4;
+      margin: 30mm 20mm 30mm 20mm;
+    }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 11.5px;
+      color: #000;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    td, th {
+      border: 1px solid #000;
+      padding: 6px;
+      vertical-align: middle;
+    }
+
+    .no-border td {
+      border: none;
+    }
+
+    .center {
+      text-align: center;
+    }
+
+    .right {
+      text-align: right;
+    }
+
+    .bold {
+      font-weight: bold;
+    }
+
+    .section-title {
+      background-color: #f2f2f2;
+      font-weight: bold;
+      text-transform: uppercase;
+      text-align: center;
+    }
+
+    .header-table td {
+      border: none;
+    }
+
+    .header-title {
+      font-size: 15px;
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+
+    .header-subtitle {
+      font-size: 13px;
+    }
+
+    .checkbox {
+      font-size: 13px;
+      text-align: center;
+      width: 30px;
+    }
+
+    .observations {
+      height: 90px;
+    }
+
+    .signature-cell {
+      height: 60px;
+      vertical-align: bottom;
+      text-align: center;
+      font-size: 11px;
+    }
+
+    .footer {
+      position: fixed;
+      bottom: -20mm;
+      left: 0;
+      right: 0;
+      text-align: center;
+      font-size: 9px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- =========================
+       ENCABEZADO
+       ========================= -->
+  <table class="header-table">
+    <tr>
+      <td style="width: 80px;">
+        <img src="{{logoIzquierdo}}" style="max-width:70px;" />
+      </td>
+      <td class="center">
+        <div class="header-title">COMPUORIENTE – MARINILLA</div>
+        <div class="header-subtitle">FORMATO DE INSCRIPCIÓN</div>
+      </td>
+      <td style="width: 80px;" class="right">
+        <img src="{{logoDerecho}}" style="max-width:70px;" />
+      </td>
+    </tr>
+  </table>
+
+  <br/>
+
+  <!-- =========================
+       INFO GENERAL
+       ========================= -->
+  <table>
+    <tr>
+      <td class="bold" style="width: 50%;">Fecha de inscripción</td>
+      <td>{{fechaActual}}</td>
+      <td class="bold">Municipio de origen</td>
+      <td>{{municipio}}</td>
+    </tr>
+  </table>
+
+  <br/>
+
+  <!-- =========================
+       DATOS PERSONALES
+       ========================= -->
+  <table>
+    <tr>
+      <td colspan="6" class="section-title">Datos personales</td>
+    </tr>
+
+    <tr>
+      <td class="bold" colspan="2">Nombre completo</td>
+      <td colspan="4">{{nombreCompleto}}</td>
+    </tr>
+
+    <tr>
+      <td class="bold">Tipo doc.</td>
+      <td>{{tipoDoc}}</td>
+      <td class="bold">Nro.</td>
+      <td>{{nroDoc}}</td>
+      <td class="bold">Expedida en</td>
+      <td>{{expedida}}</td>
+    </tr>
+
+    <tr>
+      <td class="bold">RH</td>
+      <td>{{rh}}</td>
+      <td class="bold">Día</td>
+      <td>{{diaNac}}</td>
+      <td class="bold">Mes</td>
+      <td>{{mesNac}}</td>
+    </tr>
+
+    <tr>
+      <td class="bold">Año</td>
+      <td>{{anioNac}}</td>
+      <td class="bold">Estado civil</td>
+      <td colspan="3">{{casado}}</td>
+    </tr>
+
+    <tr>
+      <td class="bold">Departamento</td>
+      <td>{{departamento}}</td>
+      <td class="bold">Ciudad</td>
+      <td colspan="3">{{ciudad}}</td>
+    </tr>
+
+    <tr>
+      <td class="bold">Dirección</td>
+      <td colspan="5">{{direccion}}</td>
+    </tr>
+
+    <tr>
+      <td class="bold">Municipio</td>
+      <td>{{municipio}}</td>
+      <td class="bold">Teléfono</td>
+      <td colspan="3">{{telefono}}</td>
+    </tr>
+
+    <tr>
+      <td class="bold">EPS</td>
+      <td>{{eps}}</td>
+      <td class="bold">Correo</td>
+      <td colspan="3">{{correo}}</td>
+    </tr>
+
+    <tr>
+      <td class="bold">Padre</td>
+      <td colspan="2">{{padre}}</td>
+      <td class="bold">C.C.</td>
+      <td colspan="2">{{ccPadre}}</td>
+    </tr>
+
+    <tr>
+      <td class="bold">Madre</td>
+      <td colspan="2">{{madre}}</td>
+      <td class="bold">C.C.</td>
+      <td colspan="2">{{ccMadre}}</td>
+    </tr>
+
+    <tr>
+      <td class="bold">Programa de interés</td>
+      <td colspan="5">{{programa}}</td>
+    </tr>
+
+    <tr>
+      <td class="bold">Horario</td>
+      <td colspan="5">{{horario}}</td>
+    </tr>
+  </table>
+
+  <br/>
+
+  <!-- =========================
+       DOCUMENTOS
+       ========================= -->
+  <table>
+    <tr>
+      <td colspan="3" class="section-title">Entrega de documentación</td>
+    </tr>
+    <tr>
+      <td class="checkbox">{{f_cedula}}</td>
+      <td colspan="2">Fotocopia de la cédula</td>
+    </tr>
+    <tr>
+      <td class="checkbox">{{f_foto}}</td>
+      <td colspan="2">Foto</td>
+    </tr>
+    <tr>
+      <td class="checkbox">{{f_cert}}</td>
+      <td colspan="2">Certificado de estudio</td>
+    </tr>
+    <tr>
+      <td class="checkbox">{{f_diploma}}</td>
+      <td colspan="2">Copia de diploma o acta</td>
+    </tr>
+    <tr>
+      <td class="checkbox">{{f_rut}}</td>
+      <td colspan="2">RUT (si lo tiene)</td>
+    </tr>
+  </table>
+
+  <br/>
+
+  <!-- =========================
+       OBSERVACIONES
+       ========================= -->
+  <table>
+    <tr>
+      <td class="section-title">Observaciones</td>
+    </tr>
+    <tr>
+      <td class="observations"></td>
+    </tr>
+  </table>
+
+  <br/><br/>
+
+  <!-- =========================
+       FIRMA
+       ========================= -->
+  <table class="no-border">
+    <tr>
+      <td class="signature-cell">
+        ___________________________<br/>
+        Firma del aspirante
+      </td>
+    </tr>
+  </table>
+
+  <div class="footer">
+    CompuOriente – Marinilla · Documento generado automáticamente
+  </div>
+
+</body>
+</html>
