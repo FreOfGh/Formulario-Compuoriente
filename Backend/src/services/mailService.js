@@ -23,7 +23,7 @@ const sendConfirmationEmails = async (data, pdfPath) => {
     // 2. Correo para el Alumno
     await transporter.sendMail({
         from: process.env.email_from,
-        to: data.correo,
+        to: data.email,
         subject: '✅ Recibimos tu inscripción - Politécnico Compuoriente',
         html: `<h1>¡Hola, ${data.nombreCompleto}!</h1>
                <p>Tu proceso de inscripción para el programa <b>${data.programaInteres}</b> ha sido recibido con éxito.</p>

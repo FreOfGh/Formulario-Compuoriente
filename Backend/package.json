@@ -19,7 +19,9 @@
     "libreoffice-convert": "^1.7.0",
     "multer": "^2.0.2",
     "nodemailer": "^7.0.12",
+    "pdf-lib": "^1.17.1",
     "pg": "^8.17.1",
-    "pizzip": "^3.2.0"
+    "pizzip": "^3.2.0",
+    "playwright": "^1.57.0"
   }
 }

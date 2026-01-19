@@ -6,8 +6,8 @@
 
   <style>
     @page {
-      size: A4;
-      margin: 30mm 20mm 30mm 20mm;
+      size: Letter;
+      margin: 25mm 20mm 25mm 20mm;
     }
 
     body {
@@ -23,7 +23,7 @@
 
     td, th {
       border: 1px solid #000;
-      padding: 6px;
+      padding: 5px;
       vertical-align: middle;
     }
 
@@ -35,24 +35,44 @@
       text-align: center;
     }
 
-    .right {
-      text-align: right;
-    }
-
     .bold {
       font-weight: bold;
     }
 
     .section-title {
-      background-color: #f2f2f2;
+      background-color: #f0f0f0;
       font-weight: bold;
       text-transform: uppercase;
       text-align: center;
     }
 
-    .header-table td {
-      border: none;
+    /* =========================
+       HEADER COMPLETO
+       ========================= */
+    .header {
+      width: 100%;
+      margin-bottom: 12px;
+      border-bottom: 2px solid #000;
     }
+
+    .header td {
+      border: none;
+      padding: 6px;
+    }
+
+    .header img {
+      max-height: 55px;
+    }
+.header-image {
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.header-image img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
 
     .header-title {
       font-size: 15px;
@@ -62,6 +82,7 @@
 
     .header-subtitle {
       font-size: 13px;
+      margin-top: 2px;
     }
 
     .checkbox {
@@ -71,11 +92,11 @@
     }
 
     .observations {
-      height: 90px;
+      height: 60px;
     }
 
     .signature-cell {
-      height: 60px;
+      height: 55px;
       vertical-align: bottom;
       text-align: center;
       font-size: 11px;
@@ -83,7 +104,7 @@
 
     .footer {
       position: fixed;
-      bottom: -20mm;
+      bottom: -18mm;
       left: 0;
       right: 0;
       text-align: center;
@@ -94,34 +115,22 @@
 <body>
 
   <!-- =========================
-       ENCABEZADO
+       HEADER INSTITUCIONAL
        ========================= -->
-  <table class="header-table">
-    <tr>
-      <td style="width: 80px;">
-        <img src="{{logoIzquierdo}}" style="max-width:70px;" />
-      </td>
-      <td class="center">
-        <div class="header-title">COMPUORIENTE – MARINILLA</div>
-        <div class="header-subtitle">FORMATO DE INSCRIPCIÓN</div>
-      </td>
-      <td style="width: 80px;" class="right">
-        <img src="{{logoDerecho}}" style="max-width:70px;" />
-      </td>
-    </tr>
-  </table>
+<div class="header-image">
+  <img src="{{headerImage}}" alt="Encabezado institucional" />
+</div>
 
-  <br/>
 
   <!-- =========================
        INFO GENERAL
        ========================= -->
   <table>
     <tr>
-      <td class="bold" style="width: 50%;">Fecha de inscripción</td>
-      <td>{{fechaActual}}</td>
-      <td class="bold">Municipio de origen</td>
-      <td>{{municipio}}</td>
+      <td class="bold" style="width: 25%;">Fecha de inscripción</td>
+      <td style="width: 25%;">{{fechaActual}}</td>
+      <td class="bold" style="width: 25%;">Municipio de origen</td>
+      <td style="width: 25%;">{{municipio}}</td>
     </tr>
   </table>
 
@@ -274,10 +283,6 @@
       </td>
     </tr>
   </table>
-
-  <div class="footer">
-    CompuOriente – Marinilla · Documento generado automáticamente
-  </div>
 
 </body>
 </html>
