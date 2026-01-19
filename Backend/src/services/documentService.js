@@ -4,7 +4,8 @@ const { chromium } = require('playwright');
 const { PDFDocument } = require('pdf-lib');
 
 const generateInscriptionPDF = async (data, files) => {
-    let browser;
+    let browser = null; // Definimos browser aquí para que el try/catch/finally lo vea
+
     try {
         const templatePath = path.resolve('templates/plantilla-formulario.html');
         const imagePath = path.resolve('templates/imagenes/personal.png');
@@ -12,17 +13,15 @@ const generateInscriptionPDF = async (data, files) => {
 
         if (!fs.existsSync(outputDir)) fs.mkdirSync(outputDir, { recursive: true });
 
-        // --- PASO 1: GENERAR EL FORMULARIO (PÁGINA 1) ---
+        // --- PREPARACIÓN DEL HTML ---
         let html = fs.readFileSync(templatePath, 'utf8');
 
-        // Logo a Base64
         let base64Image = '';
         if (fs.existsSync(imagePath)) {
             const bitmap = fs.readFileSync(imagePath);
             base64Image = `data:image/png;base64,${bitmap.toString('base64')}`;
         }
 
-        // Procesar Fechas
         const d = data.fechaNacimiento ? new Date(data.fechaNacimiento) : new Date();
         
         const variables = {
@@ -50,7 +49,6 @@ const generateInscriptionPDF = async (data, files) => {
             ccMadre: data.cedulaMadre || '',
             programa: data.carreraTecnicaDeseada || '',
             horario: data.horario || 'No Aplica',
-            // Checkboxes basados en la existencia real de archivos
             f_cedula: !!files['docIdentidad'] ? '☑' : '☐',
             f_foto: !!files['foto'] ? '☑' : '☐',
             f_cert: !!files['certificado'] ? '☑' : '☐',
@@ -58,26 +56,39 @@ const generateInscriptionPDF = async (data, files) => {
             f_rut: !!files['rut'] ? '☑' : '☐'
         };
 
-        // Reemplazo robusto
         for (const key in variables) {
             html = html.split(`{{${key}}}`).join(variables[key] ?? '');
         }
 
-        browser = await chromium.launch({ args: ['--no-sandbox'] });
-        const page = await browser.newPage();
+        // --- LANZAMIENTO DE PLAYWRIGHT (OPTIMIZADO) ---
+        // Eliminamos la doble declaración 'const' y 'let' repetida
+        browser = await chromium.launch({
+            headless: true,
+            args: [
+                '--no-sandbox', 
+                '--disable-setuid-sandbox',
+                '--disable-dev-shm-usage',
+                '--disable-gpu',
+                '--no-zygote',
+                '--single-process'
+            ]
+        });
+
+        const context = await browser.newContext();
+        const page = await context.newPage();
+        
         await page.setContent(html, { waitUntil: 'networkidle' });
         const formPdfBuffer = await page.pdf({ format: 'Letter', printBackground: true });
-        await browser.close();
-
-        // --- PASO 2: UNIR CON LOS ADJUNTOS USANDO PDF-LIB ---
-        const finalPdfDoc = await PDFDocument.create();
         
-        // Añadir el formulario base
+        await browser.close();
+        browser = null; // Marcamos como cerrado para el catch
+
+        // --- UNIÓN DE PDFS CON PDF-LIB ---
+        const finalPdfDoc = await PDFDocument.create();
         const basePdf = await PDFDocument.load(formPdfBuffer);
         const copiedPages = await finalPdfDoc.copyPages(basePdf, basePdf.getPageIndices());
         copiedPages.forEach(p => finalPdfDoc.addPage(p));
 
-        // Lista de campos de archivos para iterar en orden
         const fileKeys = ['docIdentidad', 'foto', 'certificado', 'diploma', 'rut'];
 
         for (const key of fileKeys) {
@@ -87,19 +98,17 @@ const generateInscriptionPDF = async (data, files) => {
                 const ext = path.extname(file.originalname).toLowerCase();
 
                 if (fs.existsSync(filePath)) {
+                    const fileBytes = fs.readFileSync(filePath);
                     if (ext === '.pdf') {
-                        const attachBytes = fs.readFileSync(filePath);
-                        const attachDoc = await PDFDocument.load(attachBytes);
+                        const attachDoc = await PDFDocument.load(fileBytes);
                         const pages = await finalPdfDoc.copyPages(attachDoc, attachDoc.getPageIndices());
                         pages.forEach(p => finalPdfDoc.addPage(p));
                     } 
                     else if (['.jpg', '.jpeg', '.png'].includes(ext)) {
-                        const imgBytes = fs.readFileSync(filePath);
-                        const newPage = finalPdfDoc.addPage([612, 792]); // Tamaño Carta
-                        
-                        let img;
-                        if (ext === '.png') img = await finalPdfDoc.embedPng(imgBytes);
-                        else img = await finalPdfDoc.embedJpg(imgBytes);
+                        const newPage = finalPdfDoc.addPage([612, 792]);
+                        const img = (ext === '.png') 
+                            ? await finalPdfDoc.embedPng(fileBytes) 
+                            : await finalPdfDoc.embedJpg(fileBytes);
 
                         const dims = img.scaleToFit(500, 700);
                         newPage.drawImage(img, {
@@ -120,9 +129,13 @@ const generateInscriptionPDF = async (data, files) => {
         return finalPath;
 
     } catch (error) {
-        console.error("Error en PDF Service:", error);
-        if (browser) await browser.close();
+        console.error("Error detallado en PDF Service:", error);
         throw error;
+    } finally {
+        // Cierre seguro del navegador si quedó abierto por error
+        if (browser) {
+            await browser.close().catch(() => {});
+        }
     }
 };
 
